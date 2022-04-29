@@ -1,2 +1,2 @@
 # soLArDUNE_sensitivityanalysis
-Code and data used in the analysis of the projected sensitivity of a modified DUNE module to the solar neutrino day-night effect
+Code and data supporting our project analysis. Title: Projected Sensitivity of a Modified DUNE Module to the Solar Neutrino Day-Night Effect
