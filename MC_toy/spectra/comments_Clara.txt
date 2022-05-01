@@ -1,0 +1,35 @@
+Create a TGraph .root file at tspline3.C
+
+Get the total rate at Integrate_dat.C
+
+Text files used to change spectrum:
+
+1) B8_Ar40_e_smeared.txt -> Contains data from the 8B Ar40 channel and the e channel together (Smeared case)
+2) B8_Ar40_e_unsmeared.txt -> Same but for unsmeared
+
+Macro file used to create TGraph: tspline3.C
+
+.root TGraph files:
+
+1) B8_spline_smeared.root -> Smeared TGraph
+2) B8_spline_unsmeared.root -> Unsmeared TGraph
+
+hep neutrinos event rates:
+
+1) hep_smeared_max.txt and hep_smeared_min.txt are the maximum and minimum values for hep event rates for both elecyron and Ar40 channels added. hep_smeared_mean.txt contains the data for both files combined (taken the mean). If needed, change it to .dat file.
+
+2) hep_spline_smeared_mean.root is the root file input in utility_functions.cpp. TGraph of hep_smeared_mean.txt
+
+hep and B8 event rates:
+
+1) Text file with combined data for hep and B8: smeared_hep_and_B8.txt.
+
+2) hep_B8_spline_smeared.root.
+
+
+UPDATES AFTER SUMMER INTERNSHIP:
+
+
+- solarCC_promptKE.txt contains energy spectrum of B8 and hep with no delayed
+
+= solarCC_delayedKE.txt contains delayed.
