@@ -42,7 +42,7 @@ int main() {
                                                   parameters::scint_time_window);
 
     utility.initalise_scintillation_functions_slow(parameters::t_singlet, parameters::t_triplet, parameters::singlet_fraction_Ardoping, parameters::triplet_fraction_Ardoping, parameters::scint_time_window);
-   
+        
 	// ------- Read photon detector positions and types --------
 	std::vector<std::vector<int>> opdet_type;
 	std::vector<std::vector<double>> opdet_position;
@@ -102,8 +102,8 @@ int main() {
         TF1 *fSpectrum = new TF1("fSpectrum",utility_functions::SpectrumFunction,0,Q_beta_endpoint,1);
         TF1 *fSpectrumK = new TF1("fSpectrum", utility_functions::SpectrumFunction,0,Q_beta_endpoint_K,1);
         TF1 *flandau_sn = new TF1("flandau_sn",utility_functions::fsn, 0, 50, 1);
-        TF1 *flandau_so = new TF1("flandau_so",utility_functions::fso, 0.66, 15.5, 1); 
-        TF1 *flandau_so_CC = new TF1("flandau_so_CC",utility_functions::fcc, 2.2, 17.2, 1);
+        TF1 *flandau_so = new TF1("flandau_so",utility_functions::fso, 2.2, 14.5, 1); 
+        TF1 *flandau_so_CC = new TF1("flandau_so_CC",utility_functions::fcc, 2.2, 12.5, 1);
         TF1 *flandau_hep_CC = new TF1("flandau_hep_CC", utility_functions::fhep_cc, 1.1, 15.50, 1);
         //TF1 *flandau_so_ES = new TF1("flandau_so_ES",utility_functions::fes, 0, 16.56, 1);
         TF1 *flandau_hep = new TF1("flandau_hep",utility_functions::fhep, 2.8, 16.65, 1); 
@@ -387,6 +387,7 @@ int main() {
         }
 
         if(parameters::so_CC == true){
+             //energy = flandau_so_CC->GetRandom();
              if(event % 2 == 0){
                  energy = flandau_so_CC->GetRandom();
              }
@@ -588,8 +589,8 @@ int main() {
       }
       if (parameters::simulate_xenon == true) { // xenon doped case         
         // split into prompt and late light
-        int number_photons_Ar = std::round(number_photons*singlet_fraction + number_photons*triplet_fraction*(1-(parameters::frac_ArXe_photons + parameters::frac_Xe_photons)));
-        int number_photons_Xe = std::round(number_photons*triplet_fraction*(parameters::frac_Xe_photons+parameters::frac_ArXe_photons));
+        int number_photons_Ar = std::round(number_photons*(1-parameters::frac_Xe_photons));
+        int number_photons_Xe = std::round(number_photons*parameters::frac_Xe_photons);
 
         // incident photons
         int num_VUV_geo_Ar = hits_model.VUVHits(number_photons_Ar, ScintPoint, OpDetPoint, op_channel_type, 0);       // prompt light as argon
@@ -612,8 +613,8 @@ int main() {
         }
         if (parameters::simulate_xenon == true) { // xenon doped case         
           // split into prompt and late light
-          int number_photons_Ar = std::round(number_photons*singlet_fraction+number_photons*triplet_fraction*(1-(parameters::frac_ArXe_photons + parameters::frac_Xe_photons)));
-          int number_photons_Xe = std::round(number_photons*triplet_fraction*(parameters::frac_ArXe_photons + parameters::frac_Xe_photons));
+          int number_photons_Ar = std::round(number_photons*(1-(parameters::frac_Xe_photons)));
+          int number_photons_Xe = std::round(number_photons*(parameters::frac_Xe_photons));
 
           // incident photons
           int num_VIS_geo_Ar = hits_model.VisHits(number_photons_Ar, ScintPoint, OpDetPoint, op_channel_type, 0);     // prompt light as argon
@@ -664,8 +665,10 @@ int main() {
             }
             if (parameters::simulate_xenon == true) { // in this case all remaining argon light is prompt
               double t_slow = utility.get_scintillation_time_slow();
+              double t_prompt = utility.get_scintillation_time_prompt();
               double t_slow_del = utility.get_scintillation_time_slow() + gRandom->Exp(0.0000004);
               if (isdel) emission_time = t_slow_del*1000000.0;
+              else if (isAlpha) emission_time = t_prompt*1000000.0;
               else emission_time = t_slow*1000000.0;
             }
          
@@ -713,6 +716,7 @@ int main() {
               double t_elec_ = utility.get_scintillation_time_electron();
               double t_slow_del_ = utility.get_scintillation_time_slow() + gRandom->Exp(0.0000004);
               double t_slow_ = utility.get_scintillation_time_slow();
+              double t_prompt_ = utility.get_scintillation_time_prompt();
               if (parameters::simulate_xenon == false) {
                 if (isAlpha) emission_time = t_alp_*1000000.0;
                 else if (isdel) emission_time = t_elec_del_*1000000.0;
@@ -720,6 +724,7 @@ int main() {
               }
               if (parameters::simulate_xenon == true) { // in this case all remaining argon light is prompt
                 if (isdel) emission_time = t_slow_del_*1000000.0;
+                else if (isAlpha) emission_time = t_prompt_*1000000.0;
                 else  emission_time = t_slow_*1000000.0; 
               }
 
