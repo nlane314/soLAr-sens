@@ -20,7 +20,6 @@ class utility_functions {
 
 private:
 	TF1 *fScintillation_function_electron = nullptr;
-        TF1 *fScintillation_function_electron_del = nullptr;
         TF1 *fScintillation_function_alpha = nullptr;
         TF1 *fScintillation_function_prompt = nullptr;
         TF1 *fScintillation_function_xenon = nullptr;      
@@ -40,7 +39,6 @@ public:
         
 	// scintillation function
 	static double scintillation_function( const double *t, const double *par);
-        static double scintillation_function_del( const double *t, const double *par);
 
         void initalise_scintillation_functions_argon(const double t_singlet, const double t_triplet, const double singlet_fraction_electron, const double triplet_fraction_electron,
                                                         const double singlet_fraction_alpha, const double triplet_fraction_alpha, const double scint_time_window);
@@ -51,7 +49,6 @@ public:
  
         TRandom3 *fGauss = new TRandom3();
         double get_scintillation_time_electron() { return fScintillation_function_electron->GetRandom(); }
-        double get_scintillation_time_electron_del() { return fScintillation_function_electron_del->GetRandom(); }
         double get_scintillation_time_alpha() { return fScintillation_function_alpha->GetRandom(); }
         double get_scintillation_time_prompt() { return fScintillation_function_prompt->GetRandom(); }
         double get_scintillation_time_xenon() { return fScintillation_function_xenon->GetRandom(); }

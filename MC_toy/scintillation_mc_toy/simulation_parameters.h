@@ -4,17 +4,17 @@
 namespace parameters {
 	
 	// output file
-	const char *output_file_name = "output/events_b8_foils_40.root";
+	const char *output_file_name = "output/events_.root";
 
 
     ///-------------------------------------
     //--------Simulation Settings-----------
     ///-------------------------------------
     // Xenon doping
-    const bool simulate_xenon = false;   // enables xenon doping, false = pure argon
+    const bool simulate_xenon = true;   // enables xenon doping, false = pure argon
 
     // WLS Reflective foils
-    const bool include_reflected = true; // enables WLS relfective foils on the cathode (visible light)
+    const bool include_reflected = false; // enables WLS relfective foils on the cathode (visible light)
 
     // Timings
     const bool include_timings = true;   // enables timings (emission and transport)  
@@ -29,8 +29,8 @@ namespace parameters {
     const double particle_type = 0;   // ionising particle type: 0 - electron, 1 - alpha
 
     bool supernova = false;
-    bool solar = true;
-    bool so_CC = false;
+    bool solar = false;
+    bool so_CC = true;
     //bool so_ES = false;
     bool hep_CC = false;
     //bool hep_ES = false;
@@ -101,8 +101,8 @@ namespace parameters {
     const int Ar_decays_per_sec = activity_Ar* entire_mass; // decay rate in one TPC
         
 	// Radon events:
-    const int max_events_Rn = 100000; //the 0.01 is included because of design changes to reduce alpha see https://indico.fnal.gov/event/20794/contribution/0/material/slides/0.pdf
-    const int max_events_Rn222 = 100000;
+    const int max_events_Rn = 10000; //the 0.01 is included because of design changes to reduce alpha see https://indico.fnal.gov/event/20794/contribution/0/material/slides/0.pdf
+    const int max_events_Rn222 = 10000;
 	const int max_events_Po218 = 10000; //0.25 comes from 4 alpha decays in chain from Rn222, each contributes 10Bq/kg * 0.01 with new Rn222 condition
     const int max_events_Po214 = 10000;
 	//Will want a new variable for Po210 here if including events from Rn222 decay chain 
@@ -168,7 +168,7 @@ namespace parameters {
     const double opdet_fraction_both = 1.0 - opdet_fraction_vuv_only - opdet_fraction_visible_only;
  
     // cathode foils/TPB coverage
-	const double cathode_tpb_frac = 0.80;
+	const double cathode_tpb_frac = 0.40;
 
 	// scintillation properties
 	const int scintillation_yield = 24000; 		// 24000 photons/MeV at 500 V/m
@@ -194,12 +194,12 @@ namespace parameters {
     const double t_triplet_Xe = 0.000000022;       // 22 ns
 
     //Xe doping concentration and time variables
-    const double frac_Xe_photons = 0.53;  //fraction of photons coming from Xe excimers
-    const double frac_ArXe_photons = 0.47;  //fraction of photons coming from ArXe excimers
-    const double singlet_fraction_Ardoping = 0.23;
-    const double triplet_fraction_Ardoping = 0.24;
-    const double triplet_fraction_Xedoping = 0.44;
-    const double triplet_fraction_ArXe = 0.09;
+    const double frac_Xe_photons = 0.53;  //fraction of Xe light
+    const double frac_Ar_photons = 0.47;  //fraction of Ar light
+    const double singlet_fraction_Ardoping = 0.50; 
+    const double triplet_fraction_Ardoping = 0.50;
+    const double triplet_fraction_Xedoping = 0.83;
+    const double triplet_fraction_ArXe = 0.17;
     const double t_triplet_ArXe = 0.0000047;
 
     // prompt/late ratio

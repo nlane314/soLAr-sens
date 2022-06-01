@@ -16,7 +16,6 @@
 utility_functions::~utility_functions(){
 	//if fScintillation_function != nullptr {
 		delete fScintillation_function_electron;
-                delete fScintillation_function_electron_del;
 		delete fScintillation_function_alpha;
 		delete fScintillation_function_prompt;
 		delete fScintillation_function_xenon;
@@ -67,18 +66,6 @@ double utility_functions::scintillation_function(const double *t, const double *
 	return Scintillation;
 }
 
-double utility_functions::scintillation_function_del(const double *t, const double *par) {
-        double time = *t;
-        double t_singlet = par[0];
-        double t_triplet = par[1];
-        double singlet_part = par[2];
-        double triplet_part = par[3];
-      
-        double Scintillation = exp(-((time + 0.0000004)/t_singlet))*singlet_part/t_singlet + exp(-((time + 0.0000004)/t_triplet))*triplet_part/t_triplet; 
-     
-        return Scintillation;
-}
-
 // function to create scintillation function TF1 with required parameters
 void utility_functions::initalise_scintillation_functions_argon(const double t_singlet, const double t_triplet, const double singlet_fraction_electron, 
 																const double triplet_fraction_electron, const double singlet_fraction_alpha, const double triplet_fraction_alpha, 
@@ -91,14 +78,6 @@ void utility_functions::initalise_scintillation_functions_argon(const double t_s
     fScintillation_function_electron->SetParameter(2, singlet_fraction_electron);
     fScintillation_function_electron->SetParameter(3, triplet_fraction_electron);  
     fScintillation_function_electron->SetNpx(50000);
-
-        //create scintillation del electron
-        fScintillation_function_electron_del = new TF1("Scintillation Timing", scintillation_function, 0, scint_time_window, 4);
-        fScintillation_function_electron_del->SetParameter(0, t_singlet);
-    fScintillation_function_electron_del->SetParameter(1, t_triplet);
-    fScintillation_function_electron_del->SetParameter(2, singlet_fraction_electron);
-    fScintillation_function_electron_del->SetParameter(3, triplet_fraction_electron);
-    fScintillation_function_electron_del->SetNpx(50000);
 
     // create scintillation spectrum for alphas
 	fScintillation_function_alpha = new TF1("Scintillation Timing", scintillation_function, 0, scint_time_window, 4);
@@ -183,7 +162,7 @@ double utility_functions::fso(double *x, double *par)
        double E = *x;
        double Eav = par[0];
 
-       TFile *f = new TFile("../spectra/solarCC_promptKE.root");
+       TFile *f = new TFile("../spectra/B8_prompt.root"); //Spectra of electron tarck and prompt scintillation
        TSpline3 *spline = (TSpline3*)f->Get("../spectra/Spline3");
        double f_s_neu = spline->Eval(E);
        f->Close();
@@ -197,7 +176,7 @@ double utility_functions::fcc(double *x, double *par)
       double E = *x;
       double Eav = par[0];
 
-      TFile *fcc = new TFile("../spectra/solarCC_delayedKE.root");
+      TFile *fcc = new TFile("../spectra/B8_CC_delayed.root");  //Spectra for simulating CC plus delayed emission
       TSpline3 *spline = (TSpline3*)fcc->Get("../spectra/Spline3");
       double f_s_neu_cc = spline->Eval(E);
       fcc->Close();
